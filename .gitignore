@@ -3,5 +3,6 @@ src
 *.tar.zst
 *.zip
 *.tar.bz2
+*.deb
 repo/*
 !repo/.gitkeep
