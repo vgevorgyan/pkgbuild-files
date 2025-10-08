@@ -23,8 +23,68 @@ clean_one() {
     printf '%s\n' "[skip] No PKGBUILD in: $dir" >&2
     return 0
   fi
-  printf '%s\n' "[clean] $dir -> removing everything except PKGBUILD"
-  find "$dir" -mindepth 1 -maxdepth 1 ! -name 'PKGBUILD' -exec rm -rf {} +
+  
+  # Check if .gitignore exists in this directory
+  if [ -f "$dir/.gitignore" ]; then
+    printf '%s\n' "[clean] $dir -> removing files not marked with ! in .gitignore (preserving PKGBUILD)"
+    # First, collect all files to keep (those marked with !)
+    keep_files=""
+    while IFS= read -r pattern; do
+      # Skip empty lines and comments
+      [ -z "$pattern" ] && continue
+      case "$pattern" in
+        \#*) continue ;;  # Skip comments
+        !*)  # Files to keep (marked with !)
+          keep_pattern="${pattern#!}"  # Remove the ! prefix
+          keep_pattern="${keep_pattern#./}"  # Remove leading ./ if present
+          case "$keep_pattern" in
+            /*)  # Absolute path from directory root
+              keep_files="$keep_files $dir$keep_pattern"
+              ;;
+            *)   # Relative path
+              keep_files="$keep_files $dir/$keep_pattern"
+              ;;
+          esac
+          ;;
+      esac
+    done < "$dir/.gitignore"
+    
+    # Always keep PKGBUILD and .gitignore
+    keep_files="$keep_files $dir/PKGBUILD $dir/.gitignore"
+    
+    # Now delete everything except the files we want to keep
+    find "$dir" -mindepth 1 -maxdepth 1 -type f | while read -r file; do
+      should_keep=false
+      for keep_file in $keep_files; do
+        if [ "$file" = "$keep_file" ]; then
+          should_keep=true
+          break
+        fi
+      done
+      if [ "$should_keep" = false ]; then
+        printf '%s\n' "  [rm] $(basename "$file")"
+        rm -f "$file"
+      fi
+    done
+    
+    # Handle directories
+    find "$dir" -mindepth 1 -maxdepth 1 -type d | while read -r dir_file; do
+      should_keep=false
+      for keep_file in $keep_files; do
+        if [ "$dir_file" = "$keep_file" ]; then
+          should_keep=true
+          break
+        fi
+      done
+      if [ "$should_keep" = false ]; then
+        printf '%s\n' "  [rm] $(basename "$dir_file")"
+        rm -rf "$dir_file"
+      fi
+    done
+  else
+    printf '%s\n' "[clean] $dir -> removing everything except PKGBUILD"
+    find "$dir" -mindepth 1 -maxdepth 1 ! -name 'PKGBUILD' -exec rm -rf {} +
+  fi
 }
 
 # If arguments are provided, clean only those directories
