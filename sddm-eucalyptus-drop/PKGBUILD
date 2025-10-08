@@ -1,7 +1,7 @@
 # Maintainer: Vardan Gevorgyan
 pkgname=sddm-eucalyptus-drop
 pkgver=2.0.0
-pkgrel=2
+pkgrel=1
 pkgdesc="Eucalyptus Drop is an enhanced fork of SDDM Sugar Candy by Marian Arlt."
 arch=('any')
 url="https://gitlab.com/Matt.Jolly/sddm-eucalyptus-drop"
