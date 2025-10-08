@@ -2,6 +2,17 @@
 
 A collection of Arch Linux PKGBUILD files with automated build, clean, and repository management scripts.
 
+## Planned improvements
+
+- Add non-interactive flag to `build.sh` (e.g., `-y/--yes`) for CI use
+- Support parallel builds in `build.sh` with a safe default job limit
+- Perform builds in a clean chroot (e.g., `devtools`/`extra-x86_64-build`)
+- Add a config file (e.g., `.pkgtools.conf`) for repo name and paths
+- Include `.sig` handling and `repo-add -s` (optional signing)
+- Add `repo-remove` helper to prune old package versions
+- Improve error codes and messages across all scripts
+- Document common troubleshooting steps and requirements (e.g., base-devel)
+
 ## Project Structure
 
 ```
@@ -121,11 +132,3 @@ mkdir my-package
 ## License
 
 MIT License - see [LICENSE](LICENSE) file for details.
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Add your PKGBUILD files
-4. Test with the provided scripts
-5. Submit a pull request
