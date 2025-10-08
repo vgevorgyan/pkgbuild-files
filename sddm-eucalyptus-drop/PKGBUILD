@@ -1,0 +1,18 @@
+# Maintainer: Vardan Gevorgyan
+pkgname=sddm-eucalyptus-drop
+pkgver=2.0.0
+pkgrel=2
+pkgdesc="Eucalyptus Drop is an enhanced fork of SDDM Sugar Candy by Marian Arlt."
+arch=('any')
+url="https://gitlab.com/Matt.Jolly/sddm-eucalyptus-drop"
+license=('GPL3')
+depends=('sddm>=0.21' 'qt6-svg')
+provides=("sddm-eucalyptus-drop")
+conflicts=("sddm-eucalyptus-drop")
+source=("https://gitlab.com/api/v4/projects/37107648/packages/generic/sddm-eucalyptus-drop/${pkgver}/sddm-eucalyptus-drop-v${pkgver}.zip")
+sha256sums=('5e50f87c2df2d3565488ee6fd8d9ce35e0a3faf64a076e6cc437abe8ad433795')
+
+package() {
+  cd "$srcdir/eucalyptus-drop"
+  find . -type f -exec install -Dm644 {} "$pkgdir/usr/share/sddm/themes/eucalyptus-drop/{}" \;
+}
