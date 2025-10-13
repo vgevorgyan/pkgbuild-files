@@ -1,0 +1,5 @@
+*
+!.gitignore
+!outdated.sh
+!010-onlyoffice-bin-fix-document-opening.patch
+!PKGBUILD
