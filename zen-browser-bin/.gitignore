@@ -1,0 +1,7 @@
+*
+!.gitignore
+!zen-browser.sh
+!zen.desktop
+!policies.json
+!outdated.sh
+!PKGBUILD
