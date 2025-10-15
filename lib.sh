@@ -7,7 +7,10 @@ set -eu
 # Get pkgname from a PKGBUILD file path
 get_pkgname_from_file() {
   pkgb_file="$1"
-  [ -f "$pkgb_file" ] || { printf '%s\n' ""; return 1; }
+  [ -f "$pkgb_file" ] || {
+    printf '%s\n' ""
+    return 1
+  }
   awk '
     BEGIN { name="" }
     /^pkgname=/ {
@@ -30,11 +33,32 @@ get_pkgname_from_file() {
 # Get pkgver from a PKGBUILD file path
 get_pkgver_from_file() {
   pkgb_file="$1"
-  [ -f "$pkgb_file" ] || { printf '%s\n' ""; return 1; }
+  [ -f "$pkgb_file" ] || {
+    printf '%s\n' ""
+    return 1
+  }
   awk '
     /^pkgver=/ {
       line=$0
       sub(/^pkgver=/, "", line)
+      gsub(/^[ \t]*/, "", line)
+      gsub(/["\047]/, "", line)
+      print line; exit
+    }
+  ' "$pkgb_file"
+}
+
+# Get _subver from a PKGBUILD file path
+get_subver_from_file() {
+  pkgb_file="$1"
+  [ -f "$pkgb_file" ] || {
+    printf '%s\n' ""
+    return 1
+  }
+  awk '
+    /^_subver=/ {
+      line=$0
+      sub(/^_subver=/, "", line)
       gsub(/^[ \t]*/, "", line)
       gsub(/["\047]/, "", line)
       print line; exit
@@ -52,7 +76,11 @@ get_github_latest_release() {
   else
     latest_ver=$(printf '%s' "$json" | grep -m1 -o '"tag_name"[^"]*"[^"]*"' | sed -E 's/.*"tag_name"[^"]*"([^"]*)"/\1/')
   fi
-  case "$latest_ver" in v*|V*) latest_ver="${latest_ver#v}"; latest_ver="${latest_ver#V}" ;; esac
+  case "$latest_ver" in v* | V*)
+    latest_ver="${latest_ver#v}"
+    latest_ver="${latest_ver#V}"
+    ;;
+  esac
   printf '%s\n' "$latest_ver"
 }
 
@@ -66,7 +94,11 @@ get_gitlab_latest_release() {
   else
     latest_ver=$(printf '%s' "$json" | grep -m1 -o '"tag_name"[^"]*"[^"]*"' | sed -E 's/.*"tag_name"[^"]*"([^"]*)"/\1/')
   fi
-  case "$latest_ver" in v*|V*) latest_ver="${latest_ver#v}"; latest_ver="${latest_ver#V}" ;; esac
+  case "$latest_ver" in v* | V*)
+    latest_ver="${latest_ver#v}"
+    latest_ver="${latest_ver#V}"
+    ;;
+  esac
   printf '%s\n' "$latest_ver"
 }
 
@@ -77,6 +109,18 @@ print_update_if_available() {
   latest_ver="$3"
   if [ -n "$latest_ver" ] && [ "$latest_ver" != "$pkgver" ]; then
     printf '%s: \t%s -> %s\n' "$pkgname" "$pkgver" "$latest_ver"
+  fi
+}
+
+# Print a one-line update message if latest version differs from pkgver or subver differs
+print_update_if_available_subver() {
+  pkgname="$1"
+  pkgver="$2"
+  subver="$3"
+  latest_ver="$4"
+  latest_subver="$5"
+  if [ -n "$latest_ver" ] && [ "$latest_ver" != "$pkgver" ] || [ "$latest_subver" != "$subver" ]; then
+    printf '%s: \t%s (%s) -> %s (%s)\n' "$pkgname" "$pkgver" "$subver" "$latest_ver" "$latest_subver"
   fi
 }
 
@@ -101,3 +145,4 @@ check_gitlab_latest_release() {
   latest_ver=$(get_gitlab_latest_release "$owner" "$repo")
   print_update_if_available "$pkgname" "$pkgver" "$latest_ver"
 }
+
