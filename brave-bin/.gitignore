@@ -1,0 +1,6 @@
+*
+!.gitignore
+!outdated.sh
+!brave-bin.sh
+!brave-browser.desktop
+!PKGBUILD
