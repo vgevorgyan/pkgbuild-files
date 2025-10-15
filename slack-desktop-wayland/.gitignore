@@ -1,0 +1,5 @@
+*
+!.gitignore
+!outdated.sh
+!slack-desktop.patch
+!PKGBUILD
