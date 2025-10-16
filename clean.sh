@@ -23,7 +23,7 @@ clean_one() {
     printf '%s\n' "[skip] No PKGBUILD in: $dir" >&2
     return 0
   fi
-  
+
   # Check if .gitignore exists in this directory
   if [ -f "$dir/.gitignore" ]; then
     printf '%s\n' "[clean] $dir -> removing files not marked with ! in .gitignore (preserving PKGBUILD)"
@@ -33,25 +33,25 @@ clean_one() {
       # Skip empty lines and comments
       [ -z "$pattern" ] && continue
       case "$pattern" in
-        \#*) continue ;;  # Skip comments
-        !*)  # Files to keep (marked with !)
-          keep_pattern="${pattern#!}"  # Remove the ! prefix
-          keep_pattern="${keep_pattern#./}"  # Remove leading ./ if present
-          case "$keep_pattern" in
-            /*)  # Absolute path from directory root
-              keep_files="$keep_files $dir$keep_pattern"
-              ;;
-            *)   # Relative path
-              keep_files="$keep_files $dir/$keep_pattern"
-              ;;
-          esac
+      \#*) continue ;;                    # Skip comments
+      !*)                                 # Files to keep (marked with !)
+        keep_pattern="${pattern#!}"       # Remove the ! prefix
+        keep_pattern="${keep_pattern#./}" # Remove leading ./ if present
+        case "$keep_pattern" in
+        /*) # Absolute path from directory root
+          keep_files="$keep_files $dir$keep_pattern"
           ;;
+        *) # Relative path
+          keep_files="$keep_files $dir/$keep_pattern"
+          ;;
+        esac
+        ;;
       esac
-    done < "$dir/.gitignore"
-    
+    done <"$dir/.gitignore"
+
     # Always keep PKGBUILD and .gitignore
     keep_files="$keep_files $dir/PKGBUILD $dir/.gitignore"
-    
+
     # Now delete everything except the files we want to keep
     find "$dir" -mindepth 1 -maxdepth 1 -type f | while read -r file; do
       should_keep=false
@@ -66,7 +66,7 @@ clean_one() {
         rm -f "$file"
       fi
     done
-    
+
     # Handle directories
     find "$dir" -mindepth 1 -maxdepth 1 -type d | while read -r dir_file; do
       should_keep=false
@@ -78,7 +78,7 @@ clean_one() {
       done
       if [ "$should_keep" = false ]; then
         printf '%s\n' "  [rm] $(basename "$dir_file")"
-        rm -rf "$dir_file"
+        sudo rm -rf "$dir_file"
       fi
     done
   else
@@ -92,8 +92,8 @@ if [ "$#" -gt 0 ]; then
   status=0
   for arg in "$@"; do
     case "$arg" in
-      /*) target="$arg" ;;
-      *) target="$script_dir/$arg" ;;
+    /*) target="$arg" ;;
+    *) target="$script_dir/$arg" ;;
     esac
     clean_one "$target" || status=$?
   done
@@ -118,5 +118,3 @@ if [ "$found" -eq 0 ]; then
 fi
 
 exit "$status"
-
-

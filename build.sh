@@ -8,8 +8,23 @@ set -eu
 
 script_dir="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
 
+# Setup chroot for build
+setup_chroot() {
+  chroot_dir="$1"
+  if [ ! -d "$chroot_dir" ]; then
+    sudo mkdir $chroot_dir
+  fi
+  if [ ! -d "$chroot_dir/root" ]; then
+    sudo mkarchroot -C /etc/pacman.conf -M /etc/makepkg.conf "$chroot_dir/root" base-devel
+    sudo arch-nspawn "$chroot_dir/root" pacman -Syu --noconfirm
+    sudo arch-nspawn "$chroot_dir/root" pacman -S --noconfirm archlinux-keyring
+  fi
+}
+
 build_one() {
   dir="$1"
+  chroot_dir="$dir/archbuild"
+  setup_chroot "$chroot_dir"
   if [ ! -d "$dir" ]; then
     printf '%s\n' "[skip] Not a directory: $dir" >&2
     return 0
@@ -18,8 +33,7 @@ build_one() {
     printf '%s\n' "[skip] No PKGBUILD in: $dir" >&2
     return 0
   fi
-  printf '%s\n' "[build] $dir -> makepkg -sD"
-  (makepkg -sD $dir)
+  (cd $dir && makechrootpkg -r $chroot_dir)
 }
 
 # If arguments are provided, build only those directories
@@ -27,8 +41,8 @@ if [ "$#" -gt 0 ]; then
   status=0
   for arg in "$@"; do
     case "$arg" in
-      /*) target="$arg" ;;
-      *) target="$script_dir/$arg" ;;
+    /*) target="$arg" ;;
+    *) target="$script_dir/$arg" ;;
     esac
     build_one "$target" || status=$?
   done
@@ -36,14 +50,14 @@ if [ "$#" -gt 0 ]; then
 fi
 
 # No arguments: confirm building all packages
-printf '%s' "are you sure that you want to build all packages? [y/N]: "
+printf '%s' "Are you sure that you want to build all packages? [y/N]: "
 IFS= read -r answer || answer="n"
 case "$answer" in
-  y|Y|yes|YES) ;;
-  *)
-    printf '%s\n' "Aborted."
-    exit 1
-    ;;
+y | Y | yes | YES) ;;
+*)
+  printf '%s\n' "Aborted."
+  exit 1
+  ;;
 esac
 
 # Build all subdirectories that contain a PKGBUILD
