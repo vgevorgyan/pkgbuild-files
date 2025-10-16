@@ -1,0 +1,34 @@
+# Maintainer: Vardan Gevorgyan <vgevorgyan@vtgsoftware.com>
+# Maintainer: NekoLOvO <nekolyin@qq.com>
+
+pkgname=obsidian
+pkgver=1.9.14
+pkgdesc="A powerful knowledge base that works on top of a local folder of plain text Markdown files (Official binary package with bundled Electron)"
+pkgrel=1
+depends=(
+  'gtk3'
+  'libnotify'
+  'nss'
+  'libxss'
+  'libxtst'
+  'xdg-utils'
+  'at-spi2-core'
+  'util-linux-libs'
+  'libsecret'
+)
+optdepends=('libappindicator-gtk3: tray icon support')
+install="obsidian.install"
+arch=('x86_64')
+url="https://github.com/obsidianmd/obsidian-releases"
+license=('custom')
+conflicts=('obsidian')
+provides=('obsidian')
+options=(!strip)
+source=("${pkgname}_${pkgver}_amd64.deb::${url}/releases/download/v${pkgver}/obsidian_${pkgver}_amd64.deb")
+sha256sums=('d1ad758b1977a34ff7d0c906f11e0e88aa0a940fa4a22b83d357dab8ddd32d37')
+
+package() {
+  bsdtar -xf "${srcdir}/data.tar.xz" -C "${pkgdir}/"
+  install -Dm644 "${pkgdir}/opt/Obsidian/LICENSE.electron.txt" "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.electron.txt"
+  install -Dm644 "${pkgdir}/opt/Obsidian/LICENSES.chromium.html" "${pkgdir}/usr/share/licenses/${pkgname}/LICENSES.chromium.html"
+}

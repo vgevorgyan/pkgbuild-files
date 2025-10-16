@@ -1,0 +1,5 @@
+*
+!.gitignore
+!outdated.sh
+!obsidian.install
+!PKGBUILD
