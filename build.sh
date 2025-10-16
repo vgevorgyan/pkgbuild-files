@@ -33,7 +33,7 @@ build_one() {
     printf '%s\n' "[skip] No PKGBUILD in: $dir" >&2
     return 0
   fi
-  (cd $dir && makechrootpkg -r $chroot_dir)
+  (cd $dir && makechrootpkg -c -r $chroot_dir)
 }
 
 # If arguments are provided, build only those directories
