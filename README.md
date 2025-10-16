@@ -6,7 +6,6 @@ A collection of Arch Linux PKGBUILD files with automated build, clean, and repos
 
 - Add non-interactive flag to `build.sh` (e.g., `-y/--yes`) for CI use
 - Support parallel builds in `build.sh` with a safe default job limit
-- Perform builds in a clean chroot (e.g., `devtools`/`extra-x86_64-build`)
 - Add a config file (e.g., `.pkgtools.conf`) for repo name and paths
 - Include `.sig` handling and `repo-add -s` (optional signing)
 - Add `repo-remove` helper to prune old package versions
@@ -29,9 +28,11 @@ pkgbuild-files/
 ## Scripts
 
 ### build.sh
+
 Build Arch packages in specified subfolders or all subfolders containing PKGBUILD files.
 
 **Usage:**
+
 ```bash
 # Build specific packages
 ./build.sh sddm-eucalyptus-drop other-package
@@ -41,15 +42,18 @@ Build Arch packages in specified subfolders or all subfolders containing PKGBUIL
 ```
 
 **Features:**
+
 - Runs `makepkg -sD` in each package directory
 - Skips directories without PKGBUILD files
 - Prompts for confirmation when building all packages
 - Supports absolute and relative paths
 
 ### clean.sh
+
 Remove all files and directories inside package subfolders except the PKGBUILD file.
 
 **Usage:**
+
 ```bash
 # Clean specific packages
 ./clean.sh sddm-eucalyptus-drop other-package
@@ -59,15 +63,18 @@ Remove all files and directories inside package subfolders except the PKGBUILD f
 ```
 
 **Features:**
+
 - Preserves PKGBUILD files
 - Skips the `repo/` directory
 - Removes build artifacts, source files, and package files
 - Supports absolute and relative paths
 
 ### update-repo.sh
+
 Copy built packages to repository directory and update the repository database.
 
 **Usage:**
+
 ```bash
 # Update repo with specific packages
 ./update-repo.sh sddm-eucalyptus-drop other-package
@@ -77,6 +84,7 @@ Copy built packages to repository directory and update the repository database.
 ```
 
 **Features:**
+
 - Copies `*.pkg.tar.zst` files to `repo/` directory
 - Updates `repo/myrepo.db.tar.zst` database
 - Creates `repo/` directory if it doesn't exist
@@ -101,11 +109,13 @@ Server = file:///path/to/your/pkgbuild-files/repo
 ## Example Workflow
 
 1. **Build packages:**
+
    ```bash
    ./build.sh
    ```
 
 2. **Update repository:**
+
    ```bash
    ./update-repo.sh
    ```
@@ -122,6 +132,7 @@ Server = file:///path/to/your/pkgbuild-files/repo
 3. Use the scripts to build and manage the package
 
 Example:
+
 ```bash
 mkdir my-package
 # Add PKGBUILD file
@@ -132,3 +143,4 @@ mkdir my-package
 ## License
 
 MIT License - see [LICENSE](LICENSE) file for details.
+
