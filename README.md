@@ -2,6 +2,10 @@
 
 A collection of Arch Linux PKGBUILD files with automated build, clean, and repository management scripts.
 
+## Disclaimer
+
+Some parts of the scripts in this repository were generated with AI assistance. While efforts have been made to ensure functionality and security, please review and test any scripts before using them.
+
 ## Planned improvements
 
 - Add non-interactive flag to `build.sh` (e.g., `-y/--yes`) for CI use
