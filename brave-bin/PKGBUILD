@@ -11,7 +11,7 @@
 # Contributor: Giusy Digital <kurmikon at libero dot it>
 
 pkgname=brave-bin
-pkgver=1.84.135
+pkgver=1.84.139
 pkgrel=1
 epoch=1
 pkgdesc='Web browser that blocks ads and trackers by default (binary release)'
@@ -39,7 +39,7 @@ source=(
 )
 noextract=(${pkgname}-${pkgver}-x86_64.zip)
 sha256sums=(
-  'ed688557ab72d6b9ade8c8ddeb019da921f5ac7910ba2ce4f092904b668f2d0d'
+  '750765b76453d81f3f055c35cdf1d6fb6779eb12889c7807f7c864b65bc02b64'
   '75a87dd17b42fcc6f27adfd16c82bed1c08e9251b07d2012f8d49f7412fa1d00'
   'c07276b69c7304981525ecb022f92daf7ae125a4fb05ac3442157b50826e257a'
 )
