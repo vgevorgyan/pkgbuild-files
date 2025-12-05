@@ -2,7 +2,7 @@
 # Maintainer: Gunther Schulz <dev@guntherschulz.de>
 
 pkgname=cursor-bin
-pkgver=2.1.39
+pkgver=2.1.48
 pkgrel=1
 pkgdesc='AI-first coding environment'
 arch=('x86_64')
@@ -15,7 +15,7 @@ options=(!strip)
 _commit=a9c77ceae65b77ff772d6adfe05f24d8ebcb2794
 source=("https://downloads.cursor.com/production/5c17eb2968a37f66bc6662f48d6356a100b67be8/linux/x64/deb/amd64/deb/cursor_${pkgver}_amd64.deb"
   https://gitlab.archlinux.org/archlinux/packaging/packages/code/-/raw/main/code.sh)
-sha512sums=('1026f67e2de85b9e297bf119a4ee4d809c78c47bbf97fd28d5f8bf7fbb7bb11aad520acfcacebdc3b9bcf360fff65cf2fed102fdc33d406235e909f2d8be784b'
+sha512sums=('10659a04e758c6bd6ddf52ee7986270d8d05ad84e10b5c3afe27ee850ce61919f867d50c87f8343c84ab7cd6faf0bb34f6c6c1d91a661ec51a885b65fc45815e'
   '937299c6cb6be2f8d25f7dbc95cf77423875c5f8353b8bd6cd7cc8e5603cbf8405b14dbf8bd615db2e3b36ed680fc8e1909410815f7f8587b7267a699e00ab37')
 
 _app=usr/share/cursor/resources/app
