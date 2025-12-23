@@ -11,7 +11,7 @@
 # Contributor: Giusy Digital <kurmikon at libero dot it>
 
 pkgname=brave-bin
-pkgver=1.85.116
+pkgver=1.85.118
 pkgrel=1
 epoch=1
 pkgdesc='Web browser that blocks ads and trackers by default (binary release)'
@@ -22,13 +22,10 @@ depends=(alsa-lib
   gtk3
   libxss
   nss
-  ttf-font
-)
-optdepends=(
-  'cups: Printer support'
+  ttf-font)
+optdepends=('cups: Printer support'
   'libgnome-keyring: Enable GNOME keyring support'
-  'libnotify: Native notification support'
-)
+  'libnotify: Native notification support')
 provides=("${pkgname%-bin}=$pkgver" 'brave-browser')
 conflicts=("${pkgname%-bin}")
 options=(!strip)
@@ -39,7 +36,7 @@ source=(
 )
 noextract=(${pkgname}-${pkgver}-x86_64.zip)
 sha256sums=(
-  'e8e01b3ab477f53266fdbfa8bffbaaa0ece814f15b774648b79751df7720d31b'
+  '1cb84cbf5693925152c8d48a4ebc9a5a6ff9bd945662a4806cf8a5a2766c2336'
   '75a87dd17b42fcc6f27adfd16c82bed1c08e9251b07d2012f8d49f7412fa1d00'
   'c07276b69c7304981525ecb022f92daf7ae125a4fb05ac3442157b50826e257a'
 )
