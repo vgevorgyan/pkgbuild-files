@@ -4,7 +4,7 @@
 # Contributor: agnotek <agnostic.sn [at]gmail.com>
 
 pkgname=telegram-desktop-bin
-pkgver=6.3.9
+pkgver=6.4.1
 pkgrel=1
 pkgdesc="Official desktop version of Telegram messaging app - Static binaries, developement version"
 arch=(x86_64)
@@ -42,7 +42,7 @@ source=(
   https://github.com/telegramdesktop/tdesktop/raw/v${pkgver}/lib/xdg/org.telegram.desktop.metainfo.xml
 )
 sha256sums=(
-  'fac66fcfae396aa67469ae1989f6cf132ac36261dea01ae14ab7031383710fb0'
+  '12ba5a5cb970e022e32639dbfa86d38d3a16caaf098499eee7f217096882e2f6'
   'ea1f36152b143cc2664daef5026656d55be2230ed42d43628e17ef7d2fff718c'
   '9e4180c78c895783b4559c5e1a7868a2c9aa30a29969fe5dbe9a4ce4cf5cde6c'
   '041b78681a35f07c3c929662fc66b6592c88588dc7297a5394ef7f923f2118e2'
