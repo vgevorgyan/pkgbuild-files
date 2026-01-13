@@ -2,7 +2,7 @@
 # Maintainer: NekoLOvO <nekolyin@qq.com>
 
 pkgname=obsidian
-pkgver=1.10.6
+pkgver=1.11.4
 pkgdesc="A powerful knowledge base that works on top of a local folder of plain text Markdown files (Official binary package with bundled Electron)"
 pkgrel=1
 depends=(
@@ -25,7 +25,7 @@ conflicts=('obsidian')
 provides=('obsidian')
 options=(!strip)
 source=("${pkgname}_${pkgver}_amd64.deb::${url}/releases/download/v${pkgver}/obsidian_${pkgver}_amd64.deb")
-sha256sums=('7e2fcf3fa6da54715d88a17ac906c87ca397c9d1e15ac6a0f6ba74f097a749d6')
+sha256sums=('fe979b8bdf9480a0656e30eb230a09631443d5c4c7a384f60eda9afb3373d760')
 
 package() {
   bsdtar -xf "${srcdir}/data.tar.xz" -C "${pkgdir}/"
