@@ -1,0 +1,32 @@
+# Maintainer: Vardan Gevorgyan <vgevorgyan@vtgsoftware.com>
+# Maintainer: Rafael Dominiquini <rafaeldominiquini at gmail dot com>
+
+_pkgauthor=Adembc
+_pkgname=lazyssh
+pkgname=${_pkgname}-bin
+pkgver=0.3.0
+_pkgvername=v${pkgver}
+pkgrel=1
+pkgdesc="A terminal-based SSH manager inspired by lazydocker and k9s"
+arch=('x86_64')
+_barch=('x86_64')
+url="https://github.com/${_pkgauthor}/${_pkgname}"
+_urlraw="https://raw.githubusercontent.com/${_pkgauthor}/${_pkgname}/${_pkgvername}"
+license=('MIT')
+
+depends=('glibc')
+provides=("${_pkgname}")
+conflicts=("${_pkgname}")
+
+source_x86_64=("${_pkgname}-${arch[0]}-${pkgver}.tar.gz::${url}/releases/download/${_pkgvername}/${_pkgname}_Linux_${_barch[0]}.tar.gz")
+sha256sums_x86_64=('3e87196faf748905f98062040d5a0e056de0e0eb0247413b70c2fc03c3928ad9')
+
+package() {
+  cd "${srcdir}/" || exit
+
+  install -Dm755 "${_pkgname}" "${pkgdir}/usr/bin/${_pkgname}"
+
+  install -Dm644 "README.md" "${pkgdir}/usr/share/doc/${pkgname}/README.md"
+
+  install -Dm644 "LICENSE" "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+}
