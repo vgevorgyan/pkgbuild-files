@@ -6,48 +6,63 @@
 # Contributor: Özgür Sarıer <ozgursarier1011601115[at]gmail[dot]com>
 
 pkgname=viber
-pkgver=24.9.0.3
+pkgver=27.3.0.2
 pkgrel=1
 pkgdesc="Proprietary cross-platform IM and VoIP software"
 arch=('x86_64')
 url='https://www.viber.com'
 license=('custom')
-depends=('libxss' 'xcb-util-cursor' 'xcb-util-image' 'xcb-util-keysyms' 'xcb-util-renderutil' 'xcb-util-wm' 'libxss'
-  'openssl' 'libpulse' 'alsa-lib' 'nss' 'libxcomposite' 'libxcursor' 'libxdamage'
-  'gst-plugins-base' 'gst-plugins-good' 'gst-plugins-ugly' 'gst-plugins-bad' 'gst-libav' 'libxslt' 'openssl-1.1'
-  'snappy' 'libjpeg' 'numactl' 'libxml2-legacy')
-options=('!strip')
-source=("$pkgname-$pkgver.deb::https://download.cdn.viber.com/cdn/desktop/Linux/viber.deb")
-sha256sums=('8bb7c6f12765fefe500324ec0a1e8e29ee010d89d0d2304981276a30eae42cda')
+depends=(
+  'libxml2-legacy'
+  'libxslt'
+  'libxss'
+  'qt6-multimedia'
+)
+optdepends=(
+  'qt6-multimedia-ffmpeg: For issues with gstreamer backend'
+  'qt6-multimedia-gstreamer: For issues with ffmpeg backend'
+  'gst-plugins-bad: For camera and playback issues with gstreamer backend'
+  'gst-plugins-ugly: For camera and playback issues with gstreamer backend'
+  'jack2: For audio issues with pipewire-jack'
+  'pipewire-jack: For audio issues with jack2'
+  'pavucontrol: Manage audio devices and sound volume'
+  'pipewire-pulse: pavucontrol needs this'
+  'nvidia-utils: Provides VDPAU backend libvdpau_nvidia.so'
+  'epiphany: For external links and media'
+  'firefox: For external links and media'
+  'konqueror: For external links and media'
+  'gnome-shell-extension-appindicator: To show tray icon in GNOME'
+)
+conflicts=('viber')
+options=('!debug' '!strip')
+source=(
+  "viber-$pkgver-$pkgrel.deb::https://download.cdn.viber.com/cdn/desktop/Linux/viber.deb"
+  'viber.sh.in'
+  'https://www.viber.com/app/uploads/Viber-Terms-of-Service-EN-March-2026.pdf'
+)
+b2sums=('12dc832a8ae7934b1bcb7d0d9ea702159dbaf1f1f4b91ddf00920a01ca8c34cd7d522e7b824c60413cdb97003b929ade91e7aa47feef7804497b140ae4a25d5f'
+  '9ea86d0ccf308c5b14ff7096f4324d835603455e45befbab5c48eb055155f3dae18049906d580660d7c46423617931815846f4f3a43ddad3850687911da851ac'
+  '7a935c23873efaf903fa686c74a5a9ade31c29c8dee54f4d8f98742ffd3624ff203bd681b7ae525b2118e74680edf471b9ac14ac6cd2b2f07b13dc5960600c92')
 
 prepare() {
-  cd "$srcdir"
+  bsdtar -xf data.tar.xz -C ./
 
-  tar -xf control.tar.xz
-
-  # exclude libjpeg from source to fix unavailable camera/video issue, the system one will be used instead
-  tar -Jxf data.tar.xz --exclude="opt/viber/lib/libjpeg.so.8"
-
-  sed -e 's|Exec=/opt/viber/Viber|Exec=viber|g' \
-    -e 's|/usr/share/pixmaps/viber.png|viber.png|g' \
-    -i usr/share/applications/viber.desktop
+  # Change binary path
+  sed -i -e 's|Exec=/opt/viber/Viber|Exec=/usr/bin/viber|' \
+    -e '/^Path=/d' \
+    ./usr/share/applications/viber.desktop
 }
 
 package() {
-  cd "$srcdir"
+  # Install binary wrapper
+  install -Dm755 viber.sh.in "$pkgdir/usr/bin/viber"
 
-  install -dm755 "$pkgdir/opt"
-  cp -dpr --no-preserve=ownership "$srcdir/opt/viber/" "$pkgdir/opt/"
-  install -Dm644 usr/share/applications/viber.desktop "$pkgdir/usr/share/applications/com.viber.Viber.desktop"
-  install -Dm644 copyright "$pkgdir/usr/share/licenses/viber/LICENSE"
+  # Copy all deb files
+  cp -dr --no-preserve=ownership {opt,usr} "$pkgdir"
 
-  install -dm755 "$pkgdir/usr/bin/"
-  ln -s /opt/viber/Viber "$pkgdir/usr/bin/viber"
+  # Copy Viber.svg to viber.svg
+  cp "$pkgdir/usr/share/icons/hicolor/scalable/apps/Viber.svg" "$pkgdir/usr/share/icons/hicolor/scalable/apps/viber.svg"
 
-  # install icons
-  cd "$srcdir/opt/viber/"
-  for iconsize in 16x16 24x24 32x32 48x48 64x64 96x96 128x128 256x256; do
-    install -Dm644 icons/$iconsize.png "$pkgdir/usr/share/icons/hicolor/$iconsize/apps/viber.png"
-  done
-  install -Dm644 icons/Viber.svg "$pkgdir/usr/share/icons/hicolor/scalable/apps/viber.svg"
+  # Copy updated license
+  install -Dm644 -t "$pkgdir/usr/share/licenses/viber/" Viber-Terms-of-Service-EN-March-2026.pdf
 }

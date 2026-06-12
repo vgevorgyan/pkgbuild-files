@@ -1,0 +1,7 @@
+#!/bin/sh
+
+# Fix missing qtpaths
+# /usr/bin/xdg-mime: line 885: qtpaths: command not found
+export PATH=/usr/lib/qt6/bin:$PATH
+
+exec /opt/viber/Viber "$@"

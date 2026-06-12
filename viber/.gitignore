@@ -1,4 +1,5 @@
 *
 !.gitignore
 !outdated.sh
+!viber.sh.in
 !PKGBUILD
