@@ -39,7 +39,7 @@ source=(
   "viber-$pkgver-$pkgrel.deb::https://download.cdn.viber.com/cdn/desktop/Linux/viber.deb"
   'viber.sh.in'
   'https://www.viber.com/app/uploads/Viber-Terms-of-Service-EN-March-2026.pdf'
-)
+
 b2sums=('12dc832a8ae7934b1bcb7d0d9ea702159dbaf1f1f4b91ddf00920a01ca8c34cd7d522e7b824c60413cdb97003b929ade91e7aa47feef7804497b140ae4a25d5f'
   '9ea86d0ccf308c5b14ff7096f4324d835603455e45befbab5c48eb055155f3dae18049906d580660d7c46423617931815846f4f3a43ddad3850687911da851ac'
   '7a935c23873efaf903fa686c74a5a9ade31c29c8dee54f4d8f98742ffd3624ff203bd681b7ae525b2118e74680edf471b9ac14ac6cd2b2f07b13dc5960600c92')
