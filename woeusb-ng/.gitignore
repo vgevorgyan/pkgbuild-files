@@ -1,0 +1,6 @@
+*
+!.gitignore
+!outdated.sh
+!PKGBUILD
+!pr79.patch
+!pr134.patch
