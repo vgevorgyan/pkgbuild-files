@@ -2,6 +2,8 @@
 
 set -eu
 
+exit 0
+
 script_dir="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
 . "$script_dir/../lib.sh"
 

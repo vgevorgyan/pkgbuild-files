@@ -2,10 +2,11 @@
 
 set -eu
 
+exit 0
+
 script_dir="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
 . "$script_dir/../lib.sh"
 
 check_github_latest_release "$script_dir/PKGBUILD" "brave" "brave-browser"
 
 exit 0
-

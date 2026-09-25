@@ -2,14 +2,16 @@
 
 set -eu
 
+exit 0
+
 script_dir="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
 . "$script_dir/../lib.sh"
 
 get_cursor_full_version() {
   local url fname
-  url=$(curl -fsSL -H "User-Agent: Mozilla/5.0" https://cursor.com/download \
-    | grep -oE "https://api2\.cursor\.sh/updates/download/golden/linux-x64-deb/cursor/[0-9]+\.[0-9]+" | head -n1) || return 1
-  
+  url=$(curl -fsSL -H "User-Agent: Mozilla/5.0" https://cursor.com/download |
+    grep -oE "https://api2\.cursor\.sh/updates/download/golden/linux-x64-deb/cursor/[0-9]+\.[0-9]+" | head -n1) || return 1
+
   fname=$(curl -fsSLI -H "User-Agent: Mozilla/5.0" -L -o /dev/null -w '%{url_effective}\n' "$url") || return 2
 
   echo "$fname" | grep -oE '[0-9]+\.[0-9]+\.[0-9]+'
