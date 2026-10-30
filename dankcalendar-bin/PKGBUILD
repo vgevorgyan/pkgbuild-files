@@ -6,7 +6,7 @@ _iconname=com.danklinux.dankcalendar
 _desktopid=com.danklinux.dankcalendar
 
 pkgname=dankcalendar-bin
-pkgver=1.6.1
+pkgver=2.0.0
 pkgrel=1
 pkgdesc="Local, Google, Microsoft, and CalDAV calendars for the dank desktop (prebuilt binary)"
 arch=('x86_64' 'aarch64')
